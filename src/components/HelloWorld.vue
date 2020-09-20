@@ -1,58 +1,100 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div>
+    <div class="search">
+      <form @submit.prevent="handleSubmit">
+        <input v-model="input" class="search-input" />
+        <button class="search-button" type="submit">Search</button>
+      </form>
+    </div>
+    <div class="results">
+      <template v-if="fetchSuccess">
+        <div v-bind:key="book.title" v-for="book in results">
+          <Book v-bind:book="book" />
+        </div>
+      </template>
+      <template v-if="fetching">
+        <Loading/>
+      </template>
+      <template>
+        <Error/>
+      </template>
+    <div>
   </div>
 </template>
 
 <script>
+import Book from './Book.vue';
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  name: 'app',
+  components: {
+    Book
+  },
+  props: ['books'],
+  data() {
+    return {
+      input: '',
+      results: [],
+      fetching: false,
+      fetchFailure: false,
+      fetchSuccess: false
+    };
+  },
+  methods: {
+    handleSubmit() {
+      let term = this.input;
+      fetch(`https://goodreads-server-express--dotdash.repl.co/search/${term}`)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+        })
+        .then((data) => {
+          console.log('data', data);
+          this.results = data.list;
+          this.fetchSuccess = true;
+          this.fetchFailure = false;
+          this.fetching = false;
+        })
+        .catch(() => {
+          this.fetchSuccess = false;
+          this.fetchFailure = true;
+          this.fetching = false;
+          this.input = '';
+        });
+    }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style>
+.search {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.search-button:focus {
+  outline: none;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+.search-button:hover {
+  filter: brightness(110%);
 }
-a {
-  color: #42b983;
+.search-button {
+  margin: 12px;
+  border-radius: 12px;
+  border: 1px solid #00b0ff;
+  padding: 8px 12px;
+  background-color: #00b0ff;
+  color: white;
+  font-family: 'Cabin';
+  font-size: 1.2em;
+}
+.search-input {
+  border-radius: 12px;
+  border: 1px solid black;
+  outline: none;
+  font-size: 1.2em;
+  font-family: 'Cabin';
+  padding: 8px 12px;
 }
 </style>
