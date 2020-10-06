@@ -15,7 +15,7 @@
       <template v-if="fetching">
         <Loading />
       </template>
-      <template>
+      <template v-else-if="fetchFailure">
         <Error />
       </template>
     </div>
@@ -24,10 +24,14 @@
 
 <script>
 import Book from './Book.vue';
+import Error from './Error.vue';
+import Loading from './Load.vue';
 export default {
   name: 'app',
   components: {
     Book,
+    Error,
+    Loading,
   },
   props: ['books'],
   data() {
