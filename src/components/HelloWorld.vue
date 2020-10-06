@@ -41,6 +41,7 @@ export default {
   },
   methods: {
     handleSubmit() {
+      const key = 'wB2QnQlmCrym3YtD2D5g'
       let term = this.input;
       fetch(`https://goodreads-server-express--dotdash.repl.co/search/${term}`)
         .then((response) => {
