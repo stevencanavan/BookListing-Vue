@@ -5,7 +5,12 @@ const controller = require('./controller');
 
 app.use(express.json());
 
-app.use('/', controller.getBooks, (req, res) => {
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  return next();
+});
+
+app.use('/:term', controller.getBooks, (req, res) => {
   res.json(res.locals.data);
 });
 
