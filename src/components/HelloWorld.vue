@@ -48,12 +48,7 @@ export default {
       // const key = 'wB2QnQlmCrym3YtD2D5g';
       let term = this.input;
       console.log('term', term);
-      fetch(`http://localhost:3000/${term}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      fetch(`http://localhost:3000/${term}`)
         .then((response) => {
           if (response.ok) {
             return response.json();
