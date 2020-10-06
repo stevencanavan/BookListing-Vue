@@ -13,12 +13,12 @@
         </div>
       </template>
       <template v-if="fetching">
-        <Loading/>
+        <Loading />
       </template>
       <template>
-        <Error/>
+        <Error />
       </template>
-    <div>
+    </div>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ import Book from './Book.vue';
 export default {
   name: 'app',
   components: {
-    Book
+    Book,
   },
   props: ['books'],
   data() {
@@ -36,14 +36,20 @@ export default {
       results: [],
       fetching: false,
       fetchFailure: false,
-      fetchSuccess: false
+      fetchSuccess: false,
     };
   },
   methods: {
     handleSubmit() {
-      const key = 'wB2QnQlmCrym3YtD2D5g'
+      // const key = 'wB2QnQlmCrym3YtD2D5g';
       let term = this.input;
-      fetch(`https://goodreads-server-express--dotdash.repl.co/search/${term}`)
+      console.log('term', term);
+      fetch(`http://localhost:3000/${term}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -62,8 +68,8 @@ export default {
           this.fetching = false;
           this.input = '';
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
