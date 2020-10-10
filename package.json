@@ -10,7 +10,8 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "nodemon": "^2.0.4",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
