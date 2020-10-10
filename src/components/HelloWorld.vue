@@ -55,7 +55,7 @@ export default {
           }
         })
         .then((data) => {
-          console.log('data', data);
+          console.log('data');
           this.results = data.list;
           this.fetchSuccess = true;
           this.fetchFailure = false;
