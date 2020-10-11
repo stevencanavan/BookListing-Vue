@@ -55,8 +55,8 @@ export default {
           }
         })
         .then((data) => {
-          console.log('data');
-          this.results = data.list;
+          console.log('data', data);
+          this.results = data;
           this.fetchSuccess = true;
           this.fetchFailure = false;
           this.fetching = false;
