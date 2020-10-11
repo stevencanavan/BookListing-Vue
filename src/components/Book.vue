@@ -5,16 +5,16 @@
         <em>{{ book.title }}</em>
       </li>
       <li class="book-detail">
-        <img class="cover" v-bind:src="book.imageUrl" />
+        <img class="cover" v-bind:src="book.image_url" />
       </li>
-      <li class="book-detail">by {{ book.authorName }}</li>
+      <li class="book-detail">by {{ book.author }}</li>
     </ul>
   </div>
 </template>
 <script>
 export default {
   name: 'Book',
-  props: ['book']
+  props: ['book'],
 };
 </script>
 <style>
