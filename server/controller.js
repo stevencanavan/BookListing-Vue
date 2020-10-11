@@ -26,12 +26,27 @@ controller.getBooks = (req, res, next) => {
       });
     })
     .then((parsedData) => {
-      console.log('parsed data', parsedData);
-      res.locals.data = parsedData;
+      const data = parsedData.GoodreadsResponse.search.shift().results.shift();
+      console.log('data', data);
+      const books = [];
+      for (let book of data.work) {
+        console.log('book', book);
+        console.log('title', book.best_book[0].title[0]);
+        let title = book.best_book[0].title[0];
+        let image_url = book.best_book[0].image_url[0];
+        let author = book.best_book[0].author[0].name[0];
+        books.push({
+          title: title,
+          image_url: image_url,
+          author: author,
+        });
+      }
+      console.log('books', books);
+      res.locals.data = books;
       return next();
     })
     .catch((err) => {
-      console.log('error');
+      console.log('error', err);
       return next(err);
     });
 };
