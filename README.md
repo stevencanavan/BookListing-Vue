@@ -1,4 +1,4 @@
-# hello-world
+# Book Listing in Vue
 
 ## Project setup
 ```
