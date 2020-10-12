@@ -15,19 +15,19 @@ controller.getBooks = (req, res, next) => {
         },
       }
     )
-    .then((response) => {
-      // return new Promise((resolve, reject) => {
-      //   parser(response.data, (err, result) => {
-      //     resolve(result);
-      //   });
-      // });
-      return parser(response.data, (err, result) => {
-        return result;
-      });
+    .then((response, err) => {
+      console.log('response', response);
+      if (response.status === 200) {
+        return parser(response.data, (err, result) => {
+          return result;
+        });
+      } else {
+        console.log('we are here');
+        return next(err);
+      }
     })
     .then((parsedData) => {
       const data = parsedData.GoodreadsResponse.search.shift().results.shift();
-      console.log('data', data);
       const books = [];
       for (let book of data.work) {
         console.log('book', book);
