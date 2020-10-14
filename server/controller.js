@@ -1,11 +1,11 @@
 const axios = require('axios');
 const parser = require('xml2js').parseStringPromise;
 const controller = {};
+require('dotenv').config();
 
-const key = 'wB2QnQlmCrym3YtD2D5g';
+const key = process.env.KEY;
 
 controller.getBooks = (req, res, next) => {
-  console.log('req.params', req.params.term);
   axios
     .get(
       `http://www.goodreads.com/search/index.xml?key=${key}&q=${req.params.term}`,
@@ -15,8 +15,8 @@ controller.getBooks = (req, res, next) => {
         },
       }
     )
+    // parse XML into JS object using xml2js npm package
     .then((response, err) => {
-      console.log('response', response);
       if (response.status === 200) {
         return parser(response.data, (err, result) => {
           return result;
@@ -26,12 +26,13 @@ controller.getBooks = (req, res, next) => {
         return next(err);
       }
     })
+    // get title, author, and image data from Goodreads API response
+    // store each 'book' as object with that data and add it to array
+    // add array to res.locals to go to client
     .then((parsedData) => {
       const data = parsedData.GoodreadsResponse.search.shift().results.shift();
       const books = [];
       for (let book of data.work) {
-        console.log('book', book);
-        console.log('title', book.best_book[0].title[0]);
         let title = book.best_book[0].title[0];
         let image_url = book.best_book[0].image_url[0];
         let author = book.best_book[0].author[0].name[0];
@@ -41,12 +42,10 @@ controller.getBooks = (req, res, next) => {
           author: author,
         });
       }
-      console.log('books', books);
       res.locals.data = books;
       return next();
     })
     .catch((err) => {
-      console.log('error', err);
       return next(err);
     });
 };
