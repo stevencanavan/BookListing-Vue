@@ -1,5 +1,7 @@
 # Book Listing in Vue
 
+![](book-listing-vue.gif)
+
 ## Project setup
 ```
 npm install
