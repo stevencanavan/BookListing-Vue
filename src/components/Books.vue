@@ -1,3 +1,13 @@
+<!--
+this component conditionally renders
+either load, error, or book component
+based on fetch states
+if fetchSuccess is true, it
+loops through 'results' state and render
+'book' component with each individual book element from 'results'
+in its props and a unique key to id it on the
+-->
+
 <template>
   <div>
     <div class="search">
@@ -44,8 +54,14 @@ export default {
     };
   },
   methods: {
+    // on click of the search button
+    // input state is assigned to 'term' var
+    // if response.ok 'results' state is set to fetch results
+    // else it hits .catch statement
+    // 'input' state is cleared
+    // if !response.ok all fetch states are set to false
+    // fetchFailure is set to true
     handleSubmit() {
-      // const key = 'wB2QnQlmCrym3YtD2D5g';
       this.fetchSuccess = false;
       this.fetching = true;
       this.fetchFailure = false;
